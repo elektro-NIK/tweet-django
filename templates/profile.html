@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            {% for tweet in tweets %}
+                <div class="well">
+                    <span>{{ tweet.text }}</span>
+                    <div class="username">{{ tweet.user }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
