@@ -8,12 +8,14 @@ from user_profile.models import User
 
 
 class Index(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         return render(request, 'base.html', {'name': 'World'})
 
 
 class Profile(View):
-    def get(self, request, username):
+    @staticmethod
+    def get(request, username):
         user = User.objects.get(username=username)
         tweets = Tweet.objects.filter(user=user)
         return render(request, 'profile.html', {
@@ -24,10 +26,9 @@ class Profile(View):
 
 
 class PostTweet(View):
-    def post(self, request, username):
+    @staticmethod
+    def post(request, username):
         form = TweetForm(request.POST)
-        #form.is_valid()
-        #raise form
         if form.is_valid():
             user = User.objects.get(username=username)
             tweet = Tweet(
@@ -44,3 +45,9 @@ class PostTweet(View):
             return HttpResponseRedirect('/user/{}/'.format(username))
         return render(request, 'profile.html', {'form': form})
 
+
+class HashTagPage(View):
+    @staticmethod
+    def get(request, tag):
+        hashtag = HashTag.objects.get(name=tag)
+        return render(request, 'hashtag.html', {'tweets': hashtag.tweet})
