@@ -1,25 +1,45 @@
 {% extends "base.html" %}
+{% load staticfiles %}
+{% block navbar %}
+    {% if profile.username != user.username %}
+        <p class="navbar-text navbar-left">
+            <span class="glyphicon glyphicon-user"></span>{{ profile.username }}'s profile page
+            <span class="btn btn-xs btn-default follow-btn" title="Click to follow {{ profile.username }}" value="{{ following }}" username="{{ profile.username }}">
+                <span class="glyphicon glyphicon-plus"></span>
+                <span class="follow-text">{{ following|yesno:"Unfollow,Follow" }}</span>
+            </span>
+        </p>
+    {% endif %}
+    <p class="navbar-text navbar-right">
+        <span class="glyphicon glyphicon-user"></span>
+        <a href="/user/{{ user.username }}">{{ user.username }}</a>
+    </p>
+{% endblock %}
 {% block content %}
     <div class="row clearfix">
-        <div class="col-md-12 column">
-            <form method="post" action="post/">
-                {% csrf_token %}
-                <div class="col-md-8 col-md-offset-2 fieldWrapper">
-                    {{ form.text.errors }}
-                    {{ form.text }}
-                </div>
-                {{ form.country.as_hidden }}
-                <div>
-                    <input type="submit" value="post">
-                </div>
-            </form>
-        </div>
-        <h3> </h3>
+        {% if profile.username != user.username %}
+            <div class="col-md-6 col-md-offset-3 column">
+                <form id="search-form" action="post/" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        {{ form.text.errors }}
+                        {{ form.text }}
+                        {{ form.country.as_hidden }}
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit">Post</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <h1>&nbsp;</h1>
+        {% endif %}
         <div class="col-md-12 column">
             {% for tweet in tweets %}
                 <div class="well">
                     <span>{{ tweet.text }}</span>
-                    <div class="username">{{ tweet.user }}</div>
+                    <div class="username">
+                        <a href="/user/{{ tweet.user.username }}">{{ tweet.user.username }}</a>
+                    </div>
                 </div>
             {% endfor %}
         </div>

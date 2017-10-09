@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from django.contrib.auth.views import LoginView
 
 from tweets.views import Index, Profile, PostTweet, HashTagPage, Search
+from user_profile.views import UserRedirect
 
 urlpatterns = [
     url(r'^$', Index.as_view()),
@@ -24,5 +26,8 @@ urlpatterns = [
     url(r'^user/(\w+)/post/$', PostTweet.as_view()),
     url(r'^hashtag/(\w+)/$', HashTagPage.as_view()),
     url(r'^search/$', Search.as_view()),
+    url(r'^login/$', LoginView.as_view(template_name='login.html'), name='login'),
+    url(r'^logout/$', UserRedirect.as_view()),
+    url(r'^accounts/profile/$', UserRedirect.as_view()),
     url(r'^admin/', admin.site.urls),
 ]

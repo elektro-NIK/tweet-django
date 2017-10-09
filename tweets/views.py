@@ -1,4 +1,6 @@
 import json
+
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -6,7 +8,7 @@ from django.views import View
 
 from tweets.forms import TweetForm, SearchForm
 from tweets.models import Tweet, HashTag
-from user_profile.models import User
+from user_profile.models import User, UserFollower
 
 
 class Index(View):
@@ -15,16 +17,27 @@ class Index(View):
         return render(request, 'base.html', {'name': 'World'})
 
 
-class Profile(View):
+class Profile(LoginRequiredMixin, View):
     @staticmethod
     def get(request, username):
-        user = User.objects.get(username=username)
-        tweets = Tweet.objects.filter(user=user)
-        return render(request, 'profile.html', {
-            'user':   user,
-            'tweets': tweets,
-            'form':   TweetForm(),
-        })
+        params = {}
+        user_profile = User.objects.get(username=username)
+        try:
+            user_follower = UserFollower.objects.get(user=user_profile)
+            if user_follower.followers.filter(username=request.user.username).exists():
+                params['following'] = True
+            else:
+                params['following'] = False
+        except:
+            user_follower = []
+        form = TweetForm(initial={'country': 'Global'})
+        search_form = SearchForm()
+        tweets = Tweet.objects.filter(user=user_profile).order_by('-created')
+        params['tweets'] = tweets
+        params['profile'] = user_profile
+        params['form'] = form
+        params['search'] = search_form
+        return render(request, 'profile.html', params)
 
 
 class PostTweet(View):

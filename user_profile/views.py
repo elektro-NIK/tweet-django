@@ -1,3 +1,8 @@
-from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.views import View
 
-# Create your views here.
+
+class UserRedirect(View):
+    @staticmethod
+    def get(request):
+        return HttpResponseRedirect('/user/'+request.user.username)
