@@ -17,10 +17,10 @@
 {% endblock %}
 {% block content %}
     <div class="row clearfix">
-        {% if profile.username != user.username %}
-            <div class="col-md-6 col-md-offset-3 column">
-                <form id="search-form" action="post/" method="POST">
-                    {% csrf_token %}
+        <div class="col-md-6 col-md-offset-3 column">
+            <form id="search-form" action="post/" method="POST">
+                {% csrf_token %}
+                {% if profile.username == user.username %}
                     <div class="input-group">
                         {{ form.text.errors }}
                         {{ form.text }}
@@ -29,10 +29,10 @@
                             <button class="btn btn-default" type="submit">Post</button>
                         </span>
                     </div>
-                </form>
-            </div>
-            <h1>&nbsp;</h1>
-        {% endif %}
+                {% endif %}
+            </form>
+            <h5>&nbsp;</h5>
+        </div>
         <div class="col-md-12 column">
             {% for tweet in tweets %}
                 <div class="well">
@@ -44,4 +44,7 @@
             {% endfor %}
         </div>
     </div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}

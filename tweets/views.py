@@ -1,6 +1,7 @@
 import json
 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
@@ -28,8 +29,8 @@ class Profile(LoginRequiredMixin, View):
                 params['following'] = True
             else:
                 params['following'] = False
-        except:
-            user_follower = []
+        except ObjectDoesNotExist:
+            params['following'] = False
         form = TweetForm(initial={'country': 'Global'})
         search_form = SearchForm()
         tweets = Tweet.objects.filter(user=user_profile).order_by('-created')
@@ -38,6 +39,24 @@ class Profile(LoginRequiredMixin, View):
         params['form'] = form
         params['search'] = search_form
         return render(request, 'profile.html', params)
+
+    @staticmethod
+    def post(request, username):
+        follow = request.POST['follow']
+        user = User.objects.get(username=request.user.username)
+        user_profile = User.objects.get(username=username)
+        user_follower, _ = UserFollower.objects.get_or_create(user=user_profile)
+        if follow == 'true':
+            # follow
+            user_follower.count += 1
+            user_follower.save()
+            user_follower.followers.add(user)
+        else:
+            # unfollow
+            user_follower.count -= 1
+            user_follower.save()
+            user_follower.followers.remove(user)
+        return HttpResponse(json.dumps(''), content_type='application/json')
 
 
 class PostTweet(View):
