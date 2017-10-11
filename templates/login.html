@@ -22,6 +22,7 @@
                 <td>{{ form.password }}</td>
             </tr>
         </table>
+        <p><a href="{% url 'signup' %}">Register?</a></p>
         <input type="submit" value="login" />
         <input type="hidden" name="next" value="{{ next }}" />
     </form>
