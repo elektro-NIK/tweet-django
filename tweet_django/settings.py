@@ -124,3 +124,4 @@ STATICFILES_DIRS = (os.path.join('static'),)
 
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/'
+TWEETS_PER_PAGE = 10

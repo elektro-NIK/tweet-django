@@ -10,3 +10,8 @@ class UserFollower(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    @classmethod
+    def create(cls, user):
+        user_follower = cls(user=user)
+        return user_follower

@@ -1,12 +1,13 @@
 import json
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.views import View
 
+from tweet_django.settings import TWEETS_PER_PAGE
 from tweets.forms import TweetForm, SearchForm
 from tweets.models import Tweet, HashTag
 from user_profile.models import User, UserFollower
@@ -23,17 +24,22 @@ class Profile(LoginRequiredMixin, View):
     def get(request, username):
         params = {}
         user_profile = User.objects.get(username=username)
-        try:
-            user_follower = UserFollower.objects.get(user=user_profile)
-            if user_follower.followers.filter(username=request.user.username).exists():
-                params['following'] = True
-            else:
-                params['following'] = False
-        except ObjectDoesNotExist:
+        user_follower = UserFollower.objects.get(user=user_profile)
+        if user_follower.followers.filter(username=request.user.username).exists():
+            params['following'] = True
+        else:
             params['following'] = False
         form = TweetForm(initial={'country': 'Global'})
         search_form = SearchForm()
         tweets = Tweet.objects.filter(user=user_profile).order_by('-created')
+        paginator = Paginator(tweets, TWEETS_PER_PAGE)
+        page = request.GET.get('page')
+        try:
+            tweets = paginator.page(page)
+        except PageNotAnInteger:
+            tweets = paginator.page(1)
+        except EmptyPage:
+            tweets = paginator.page(paginator.num_pages)
         params['tweets'] = tweets
         params['profile'] = user_profile
         params['form'] = form
