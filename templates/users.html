@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block navbar %}
+    <p class="navbar-text navbar-right">
+        <span class="glyphicon glyphicon-user"></span>{{ user.username }}
+    </p>
+{% endblock %}
+
+{% block content %}
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            {% for user_follower in user_followers %}
+                <div class="well">
+                    <span class="username"><a href="/user/{{ user_follower.user.username }}/">{{ user_follower.user.username }}</a></span>
+                    <span class="count text-muted"> ({{ user_follower.count }} followers)</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
