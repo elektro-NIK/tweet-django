@@ -21,14 +21,14 @@ from tweets.views import Index, Profile, PostTweet, HashTagPage, Search
 from user_profile.views import UserRedirect, MostFollowedUsers, Logout, Signup
 
 urlpatterns = [
-    url(r'^$', Index.as_view()),
-    url(r'^user/(\w+)/$', Profile.as_view()),
-    url(r'^user/(\w+)/post/$', PostTweet.as_view()),
-    url(r'^hashtag/(\w+)/$', HashTagPage.as_view()),
-    url(r'^search/$', Search.as_view()),
-    url(r'^signup/$', Signup.as_view(), name='signup'),
+    url(r'^$', Index.as_view(),                                     name='index'),
+    url(r'^user/(\w+)/$', Profile.as_view(),                        name='profile'),
+    url(r'^user/(\w+)/post/$', PostTweet.as_view(),                 name='new_post'),
+    url(r'^hashtag/(\w+)/$', HashTagPage.as_view(),                 name='hashtag'),
+    url(r'^search/$', Search.as_view(),                             name='search'),
+    url(r'^signup/$', Signup.as_view(),                             name='signup'),
     url(r'^login/$', LoginView.as_view(template_name='login.html'), name='login'),
-    url(r'^logout/$', Logout.as_view()),
+    url(r'^logout/$', Logout.as_view(),                             name='logout'),
     url(r'^accounts/profile/$', UserRedirect.as_view()),
     url(r'^mostfollowed/$', MostFollowedUsers.as_view()),
     url(r'^admin/', admin.site.urls),

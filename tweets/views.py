@@ -16,7 +16,7 @@ from user_profile.models import User, UserFollower
 class Index(View):
     @staticmethod
     def get(request):
-        return render(request, 'base.html', {'name': 'World'})
+        return render(request, 'base/base.html', {'name': 'World'})
 
 
 class Profile(LoginRequiredMixin, View):
@@ -30,7 +30,6 @@ class Profile(LoginRequiredMixin, View):
         else:
             params['following'] = False
         form = TweetForm(initial={'country': 'Global'})
-        search_form = SearchForm()
         tweets = Tweet.objects.filter(user=user_profile).order_by('-created')
         paginator = Paginator(tweets, TWEETS_PER_PAGE)
         page = request.GET.get('page')
@@ -43,7 +42,6 @@ class Profile(LoginRequiredMixin, View):
         params['tweets'] = tweets
         params['profile'] = user_profile
         params['form'] = form
-        params['search'] = search_form
         return render(request, 'profile.html', params)
 
     @staticmethod
@@ -96,7 +94,8 @@ class HashTagPage(View):
 class Search(View):
     @staticmethod
     def get(request):
-        form = SearchForm()
+        # TODO: autoloading
+        form = SearchForm(request.GET)
         return render(request, 'search.html', {'search': form})
 
     @staticmethod
