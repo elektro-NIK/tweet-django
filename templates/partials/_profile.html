@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<div class="well profile">
+    <div class="row">
+        <div class="col-md-4">
+            <a href="#"><span class="userpic glyphicon glyphicon-user"></span></a>
+        </div>
+        <div class="col-md-8">
+            <a href="{% url 'profile' profile.username %}"><h4>{{ profile.username }}</h4></a>
+            {% if profile.username != user.username %}
+                {% csrf_token %}
+                <button class="btn btn-{{ following|yesno:'danger,success' }} follow-btn" value="{{ following }}" username="{{ profile.username }}">
+                    <span class="glyphicon glyphicon-{{ following|yesno:'minus,plus'}}"></span>
+                    <span class="follow-text">{{ following|yesno:"Unfollow,Follow" }}</span>
+                </button>
+            {% endif %}
+        </div>
+        <div class="col-md-12">
+            <div class="row stat">
+                <ul class="list-inline">
+                    <li class="col-md-4 column">
+                        <a href="{% url 'profile' profile.username %}">
+                            <div>Tweets</div>
+                            <div class="profile stat">{{ stat.tweets }}</div>
+                        </a>
+                    </li>
+                    <li class="col-md-4">
+                        <a href="#">
+                            <div>Following</div>
+                            <div class="profile stat">{{ stat.following }}</div>
+                        </a>
+                    </li>
+                    <li class="col-md-4">
+                        <a href="#" title="1.810 Followers">
+                            <div>Followers</div>
+                            <div class="profile stat">{{ stat.followers }}</div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

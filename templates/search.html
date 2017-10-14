@@ -5,16 +5,22 @@
         <div class="col-md-6 col-md-offset-3 column">
             <form id="search-form" method="post">
                 {% csrf_token %}
-                <div class="input-group input-group-sm">
-                    {{ search.query.errors }}
-                    {{ search.query }}
-                    <span class="input-group-button">
-                        <button class="btn btn-search" type="submit">search</button>
-                    </span>
+                {{ search.query.errors }}
+                <div class="input-group">
+                    {% if search.query.value %}
+                        <input type="text" class="form-control" placeholder="Search" name="{{ search.query.name }}" value="{{ search.query.value }}">
+                    {% else %}
+                        <input type="text" class="form-control" placeholder="Search" name="{{ search.query.name }}">
+                    {% endif %}
+                    <div class="input-group-btn">
+                        <button class="btn btn-search" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
                 </div>
             </form>
+            <h5>&nbsp;</h5>
         </div>
-        <div class="col-md-12 column tweets">
+        <div class="col-md-6 col-md-offset-3 column tweets">
+            {% include 'partials/_tweet_wall.html' with tweets=tweets %}
         </div>
     </div>
 {% endblock %}

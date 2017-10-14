@@ -5,6 +5,28 @@ body {
 
 div.username {
   font-size: 75%;
-  text-align: right;
+  text-align: left;
   font-weight: bold;
+}
+
+.userpic {
+  font-size: 70px;
+}
+
+.profile.stat {
+  font-size: 140%;
+}
+
+ul.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+.well.profile {
+    padding: 10px;
+}
+
+.row.stat {
+    margin-right: 0px;
+    margin-left: 0px;
 }

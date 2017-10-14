@@ -42,6 +42,11 @@ class Profile(LoginRequiredMixin, View):
         params['tweets'] = tweets
         params['profile'] = user_profile
         params['form'] = form
+        params['stat'] = {
+            'tweets':    len(Tweet.objects.filter(user=user_profile)),
+            'following': len(User.objects.get(userfollower=user_follower).followers.all()),
+            'followers': UserFollower.objects.values_list('count').filter(user=user_profile).get()[0],
+        }
         return render(request, 'profile.html', params)
 
     @staticmethod
@@ -95,16 +100,18 @@ class Search(View):
     @staticmethod
     def get(request):
         # TODO: autoloading
-        form = SearchForm(request.GET)
-        return render(request, 'search.html', {'search': form})
+        query = request.GET.get('query')
+        tweets = Tweet.objects.filter(text__icontains=query).order_by('-created') if query else ' '
+        form = SearchForm() if not query else SearchForm(initial={'query': query})
+        return render(request, 'search.html', {'search': form, 'tweets': tweets})
 
     @staticmethod
     def post(request):
         form = SearchForm(request.POST)
         if form.is_valid():
             query = form.cleaned_data['query']
-            tweets = Tweet.objects.filter(text__icontains=query)
-            return_str = render_to_string('partials/_tweet_search.html', {'query': query, 'tweets': tweets})
+            tweets = Tweet.objects.filter(text__icontains=query).order_by('-created')
+            return_str = render_to_string('partials/_tweet_wall.html', {'query': query, 'tweets': tweets})
             return HttpResponse(json.dumps(return_str), content_type='application/json')
         else:
-            return HttpResponseRedirect('/search/')
+            return HttpResponse('')

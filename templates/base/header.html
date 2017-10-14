@@ -5,13 +5,13 @@
             <li class="dropdown">
                 <a href="/user/{{ user.username }}/" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> {{ user.username }}</a>
                 <ul class="dropdown-menu">
-                    <li><a href="{% url 'profile' user.username %}">Profile <span class="glyphicon glyphicon-user pull-right"></span></a></li>
+                    <li><a href="{% url 'profile' user.username %}"><span class="glyphicon glyphicon-user"></span> Profile</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">User stats <span class="glyphicon glyphicon-stats pull-right"></span></a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-stats"></span> User stats</a></li>
                     <li class="divider"></li>
-                    <li><a href="#">Settings <span class="glyphicon glyphicon-cog pull-right"></span></a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
                     <li class="divider"></li>
-                    <li><a href="{% url 'logout' %}">Logout <span class="glyphicon glyphicon-log-out pull-right"></span></a></li>
+                    <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -20,7 +20,7 @@
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Search" name="query">
                     <div class="input-group-btn">
-                        <button class="btn btn-default" type="submit">
+                        <button class="btn btn-search" type="submit">
                             <i class="glyphicon glyphicon-search"></i>
                         </button>
                     </div>

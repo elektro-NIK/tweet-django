@@ -1,0 +1,39 @@
+{% if not tweets %}
+    <div class="well">
+        <span>Not found</span>
+    </div>
+{% elif tweets.0 == ' ' %}
+    <div></div>
+{% else %}
+    {% load humanize %}
+    {% for tweet in tweets %}
+        <div class="well">
+            <div class="username">
+                <a href="/user/{{ tweet.user.username }}">{{ tweet.user.username }}</a>
+                <span> ({{ tweet.created|naturaltime }})</span>
+            </div>
+            <div>{{ tweet.text }}</div>
+        </div>
+    {% endfor %}
+    {% if tweets.has_other_pages %}
+        <ul class="pagination">
+            {% if tweets.has_previous %}
+                <li><a href="?page={{ tweets.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in tweets.paginator.page_range %}
+                {% if tweets.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if tweets.has_next %}
+                <li><a href="?page={{ tweets.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
+{% endif %}
