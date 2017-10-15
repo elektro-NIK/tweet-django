@@ -1,5 +1,6 @@
 {% extends "base/base.html" %}
 {% load staticfiles %}
+{% load i18n %}
 {% block navbar %}
     <p class="navbar-text navbar-right">
         <span class="glyphicon glyphicon-user"></span>{{ user.username }}
@@ -12,7 +13,7 @@
             {% for user_follower in user_followers %}
                 <div class="well">
                     <span class="username"><a href="/user/{{ user_follower.user.username }}/">{{ user_follower.user.username }}</a></span>
-                    <span class="count text-muted"> ({{ user_follower.count }} followers)</span>
+                    <span class="count text-muted"> ({{ user_follower.count }} {% trans 'followers' %})</span>
                 </div>
             {% endfor %}
         </div>

@@ -16,7 +16,7 @@ from user_profile.models import User, UserFollower
 class Index(View):
     @staticmethod
     def get(request):
-        return render(request, 'base/base.html', {'name': 'World'})
+        return render(request, 'base/base.html')
 
 
 class Profile(LoginRequiredMixin, View):

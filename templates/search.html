@@ -1,5 +1,6 @@
 {% extends "base/base.html" %}
 {% load staticfiles %}
+{% load i18n %}
 {% block content %}
     <div class="row clearfix">
         <div class="col-md-6 col-md-offset-3 column">
@@ -8,9 +9,9 @@
                 {{ search.query.errors }}
                 <div class="input-group">
                     {% if search.query.value %}
-                        <input type="text" class="form-control" placeholder="Search" name="{{ search.query.name }}" value="{{ search.query.value }}">
+                        <input type="text" class="form-control" placeholder="{% trans 'Search' %}" name="{{ search.query.name }}" value="{{ search.query.value }}">
                     {% else %}
-                        <input type="text" class="form-control" placeholder="Search" name="{{ search.query.name }}">
+                        <input type="text" class="form-control" placeholder="{% trans 'Search' %}" name="{{ search.query.name }}">
                     {% endif %}
                     <div class="input-group-btn">
                         <button class="btn btn-search" type="submit"><i class="glyphicon glyphicon-search"></i></button>

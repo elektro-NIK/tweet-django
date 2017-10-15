@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load i18n %}
 <div class="well profile">
     <div class="row">
         <div class="col-md-4">
@@ -10,7 +11,7 @@
                 {% csrf_token %}
                 <button class="btn btn-{{ following|yesno:'danger,success' }} follow-btn" value="{{ following }}" username="{{ profile.username }}">
                     <span class="glyphicon glyphicon-{{ following|yesno:'minus,plus'}}"></span>
-                    <span class="follow-text">{{ following|yesno:"Unfollow,Follow" }}</span>
+                    <span class="follow-text">{{ following|yesno:_('Unfollow,Follow') }}</span>
                 </button>
             {% endif %}
         </div>
@@ -19,19 +20,19 @@
                 <ul class="list-inline">
                     <li class="col-md-4 column">
                         <a href="{% url 'profile' profile.username %}">
-                            <div>Tweets</div>
+                            <div>{% trans 'Tweets' %}</div>
                             <div class="profile stat">{{ stat.tweets }}</div>
                         </a>
                     </li>
                     <li class="col-md-4">
                         <a href="#">
-                            <div>Following</div>
+                            <div>{% trans 'Following' %}</div>
                             <div class="profile stat">{{ stat.following }}</div>
                         </a>
                     </li>
                     <li class="col-md-4">
                         <a href="#" title="1.810 Followers">
-                            <div>Followers</div>
+                            <div>{% trans 'Followers' %}</div>
                             <div class="profile stat">{{ stat.followers }}</div>
                         </a>
                     </li>
