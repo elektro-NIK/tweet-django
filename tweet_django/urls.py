@@ -13,11 +13,11 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import LoginView
 
-from tweets.views import Index, Profile, PostTweet, HashTagPage, Search
+from tweets.views import Index, Profile, PostTweet, HashTagPage, Search, SetLang
 from user_profile.views import UserRedirect, MostFollowedUsers, Logout, Signup
 
 urlpatterns = [
@@ -32,4 +32,6 @@ urlpatterns = [
     url(r'^accounts/profile/$', UserRedirect.as_view()),
     url(r'^mostfollowed/$', MostFollowedUsers.as_view()),
     url(r'^admin/', admin.site.urls),
+    url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^setlang/(?P<lang>\w+)/$', SetLang.as_view(),                name='setlang'),
 ]

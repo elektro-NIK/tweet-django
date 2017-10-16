@@ -1,6 +1,7 @@
+{% load i18n %}
 {% if not tweets %}
     <div class="well">
-        <span>Not found</span>
+        <span>{% trans 'Nothing to show' %}</span>
     </div>
 {% elif tweets.0 == ' ' %}
     <div></div>

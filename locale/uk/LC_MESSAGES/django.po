@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-15 18:45+0000\n"
+"POT-Creation-Date: 2017-10-16 04:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -93,6 +93,10 @@ msgstr "Читає"
 #: templates/partials/_profile.html:35
 msgid "Followers"
 msgstr "Читачі"
+
+#: templates/partials/_tweet_wall.html:4
+msgid "Nothing to show"
+msgstr "Немає даних для відображення"
 
 #: templates/profile.html:15
 msgid "New tweet"

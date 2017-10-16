@@ -5,6 +5,7 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponseRedirect, HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.utils import translation
 from django.views import View
 
 from tweet_django.settings import TWEETS_PER_PAGE
@@ -115,3 +116,14 @@ class Search(View):
             return HttpResponse(json.dumps(return_str), content_type='application/json')
         else:
             return HttpResponse('')
+
+
+class SetLang(View):
+    @staticmethod
+    def get(request, lang):
+        lang_code = lang
+        next_url = request.META.get('HTTP_REFERER') or '/'
+        response = HttpResponseRedirect(next_url)
+        translation.activate(lang_code)
+        request.session[translation.LANGUAGE_SESSION_KEY] = lang_code
+        return response

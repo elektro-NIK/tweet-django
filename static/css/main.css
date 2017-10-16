@@ -30,3 +30,16 @@ ul.pagination {
     margin-right: 0px;
     margin-left: 0px;
 }
+
+.btn-transparent {
+    background: transparent;
+    border: 0px;
+}
+
+.btn-transparent:hover {
+    background: transparent;
+}
+
+#lang-selector {
+     margin-top: 6px;
+}

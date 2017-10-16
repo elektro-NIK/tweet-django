@@ -4,19 +4,25 @@
     <head>
         <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" media="screen" />
         <link href="{% static 'css/main.css' %}" rel="stylesheet" media="screen" />
+        <link href="{% static 'css/lang/languages.min.css' %}" rel="stylesheet" media="screen" />
         {% block css %}
         {% endblock %}
         <title>Index</title>
     </head>
     <body>
-        {% include "base/header.html" %}
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            {% include "base/header.html" %}
+        </nav>
 
         <div class="container">
             {% block content %}
             {% endblock %}
         </div>
 
-        {% include "base/footer.html" %}
+        <nav class="navbar navbar-inverse navbar-fixed-bottom">
+            {% include "base/footer.html" %}
+        </nav>
+
         <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
         <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
         {% block js %}
