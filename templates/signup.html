@@ -4,7 +4,6 @@
     {% if form.errors %}
         <p>{% trans 'Error! Please try again.' %}</p>
     {% endif %}
-    {{ form.as_p }}
     <form class="form-horizontal" method="post" action="{% url 'signup' %}">
         {% csrf_token %}
         <input type="hidden" name="next" value="{{ next }}">

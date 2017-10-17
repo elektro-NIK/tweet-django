@@ -19,3 +19,32 @@ class HashTag(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Like(models.Model):
+    tweet = models.ForeignKey(Tweet)
+    users = models.ManyToManyField(User)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.tweet.text
+
+
+class Retweet(models.Model):
+    tweet = models.ForeignKey(Tweet)
+    users = models.ManyToManyField(User)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.tweet.text
+
+
+class Comment(models.Model):
+    tweet = models.ForeignKey(Tweet)
+    user = models.ForeignKey(User)
+    text = models.CharField(max_length=280)
+    created = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.text

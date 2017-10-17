@@ -19,22 +19,22 @@
             <div class="row stat">
                 <ul class="list-inline">
                     <li class="col-md-4 column">
-                        <a href="{% url 'profile' profile.username %}">
-                            <div>{% trans 'Tweets' %}</div>
-                            <div class="profile stat">{{ stat.tweets }}</div>
-                        </a>
+                        <div>{% trans 'Tweets' %}</div>
+                        <div class="profile stat">
+                            <a href="{% url 'profile' profile.username %}">{{ stat.tweets }}</a>
+                        </div>
                     </li>
                     <li class="col-md-4">
-                        <a href="#">
-                            <div>{% trans 'Following' %}</div>
-                            <div class="profile stat">{{ stat.following }}</div>
-                        </a>
+                        <div>{% trans 'Following' %}</div>
+                        <div class="profile stat">
+                            <a href="#">{{ stat.following }}</a>
+                        </div>
                     </li>
                     <li class="col-md-4">
-                        <a href="#" title="1.810 Followers">
-                            <div>{% trans 'Followers' %}</div>
-                            <div class="profile stat">{{ stat.followers }}</div>
-                        </a>
+                        <div>{% trans 'Followers' %}</div>
+                        <div class="profile stat">
+                            <a href="#">{{ stat.followers }}</a>
+                        </div>
                     </li>
                 </ul>
             </div>

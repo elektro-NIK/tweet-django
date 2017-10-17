@@ -38,8 +38,19 @@ ul.pagination {
 
 .btn-transparent:hover {
     background: transparent;
+    border: 0px;
+}
+
+.btn-transparent:focus {
+    outline: none; /* It's very bad idea! */
+    background: transparent;
 }
 
 #lang-selector {
      margin-top: 6px;
+}
+
+.well.tweet {
+    padding-top: 10px;
+    padding-bottom: 0px;
 }
