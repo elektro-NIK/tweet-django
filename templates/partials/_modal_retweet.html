@@ -1,0 +1,22 @@
+{% load i18n %}
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal">×</button>
+            <h4 class="modal-title">{% trans title %}</h4>
+        </div>
+        <div class="modal-body">
+            <ul class="list-unstyled">
+                {% for retweet in data %}
+                    <li>
+                        <span class="glyphicon glyphicon-user"></span>
+                        <a href="{% url 'profile' retweet.user %}">{{ retweet.user }}</a> ({{ retweet.created }})
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" data-dismiss="modal">{% trans 'Close' %}</button>
+        </div>
+    </div>
+</div>

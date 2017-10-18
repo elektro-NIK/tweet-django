@@ -8,10 +8,10 @@ class UserFollower(models.Model):
     count = models.IntegerField(default=0)
     followers = models.ManyToManyField(User, related_name='followers')
 
-    def __str__(self):
-        return self.user.username
-
     @classmethod
     def create(cls, user):
         user_follower = cls(user=user)
         return user_follower
+
+    def __str__(self):
+        return self.user.username

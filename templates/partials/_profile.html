@@ -27,17 +27,24 @@
                     <li class="col-md-4">
                         <div>{% trans 'Following' %}</div>
                         <div class="profile stat">
-                            <a href="#">{{ stat.following }}</a>
+                            <a href="#" data-toggle="modal" data-target="#followingModal">{{ stat.following }}</a>
+                            <div id="followingModal" class="modal fade">
+                                {% include 'partials/_modal_list.html' with title='Following' data=profile.followers.all %}
+                            </div>
                         </div>
                     </li>
                     <li class="col-md-4">
                         <div>{% trans 'Followers' %}</div>
                         <div class="profile stat">
-                            <a href="#">{{ stat.followers }}</a>
+                            <a href="#" data-toggle="modal" data-target="#followersModal">{{ stat.followers }}</a>
+                            <div id="followersModal" class="modal fade">
+                                {% include 'partials/_modal_list.html' with title='Followers' data=profile.userfollower.followers.all %}
+                            </div>
                         </div>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
+
 </div>

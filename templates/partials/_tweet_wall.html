@@ -16,13 +16,22 @@
             <div>{{ tweet.text }}</div>
             <div>
                 <button class="btn btn-default btn-transparent like-btn">
-                    <i class="glyphicon glyphicon-heart{{ tweet.like|yesno:',-empty'}}"></i><a href="#"> 1</a>
+                    <i class="glyphicon glyphicon-heart{{ tweet.selflike|yesno:',-empty'}}"></i>
+                    <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.id}}"> {{ tweet.like.users.all.count }}</a>
                 </button>
+                <div id="likeModal{{tweet.id}}" class="modal fade">
+                    {% include 'partials/_modal_list.html' with title='Likes' data=tweet.like.users.all %}
+                </div>
                 <button class="btn btn-default btn-transparent retweet-btn">
-                    <i class="glyphicon glyphicon-retweet"></i><a href="#"> 2</a>
+                    <i class="glyphicon glyphicon-retweet"></i>
+                    <a href="#" data-toggle="modal" data-target="#retweetModal{{tweet.id}}"> {{ tweet.count_retweets }}</a>
                 </button>
+                <div id="retweetModal{{tweet.id}}" class="modal fade">
+                    {% include 'partials/_modal_retweet.html' with title='Retweets' data=tweet.retweets.all %}
+                </div>
                 <button class="btn btn-default btn-transparent comment-btn">
-                    <i class="glyphicon glyphicon-comment"></i><a href="#"> 3</a>
+                    <i class="glyphicon glyphicon-comment"></i>
+                    <a href="#"> {{ tweet.count_comments }}</a>
                 </button>
             </div>
         </div>

@@ -15,20 +15,19 @@ class HashTagAdmin(admin.ModelAdmin):
 
 
 class LikeAdmin(admin.ModelAdmin):
-    list_display = ('tweet', 'is_active',)
-    list_filter = ('is_active',)
+    list_display = ('tweet',)
     search_fields = ('tweet',)
 
 
 class RetweetAdmin(admin.ModelAdmin):
-    list_display = ('tweet', 'is_active',)
-    list_filter = ('is_active',)
-    search_fields = ('tweet',)
+    list_display = ('tweet', 'user', 'is_active',)
+    list_filter = ('user', 'is_active',)
+    search_fields = ('tweet', 'user',)
 
 
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('tweet', 'user', 'text', 'is_active', 'created')
-    list_filter = ('tweet', 'user', 'is_active',)
+    list_filter = ('user', 'is_active',)
     ordering = ('-created',)
     search_fields = ('text', 'user', 'tweet')
 
