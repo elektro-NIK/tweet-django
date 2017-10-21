@@ -47,7 +47,7 @@ class Signup(View):
                 email=form.cleaned_data['email'],
                 password=form.cleaned_data['password'],
                 first_name=form.cleaned_data['first_name'],
-                last_name=form.cleaned_data['last_name'],
+                last_name=form.cleaned_data['last_name']
             )
             UserFollower.create(user).save()
             try:
