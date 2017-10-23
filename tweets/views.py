@@ -73,7 +73,14 @@ class Profile(LoginRequiredMixin, View):
         return HttpResponse(json.dumps(''), content_type='application/json')
 
 
-class PostTweet(View):
+class TweetView(View):
+    @staticmethod
+    def get(request, tweet_id):
+        tweet = Tweet.objects.get(id=tweet_id)
+        return render(request, 'tweet.html', {'tweet': tweet})
+
+
+class NewTweet(View):
     @staticmethod
     def post(request, username):
         form = TweetForm(request.POST)

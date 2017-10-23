@@ -17,13 +17,14 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import LoginView
 
-from tweets.views import Index, Profile, PostTweet, HashTagPage, Search, SetLang
+from tweets.views import Index, Profile, NewTweet, HashTagPage, Search, SetLang, TweetView
 from user_profile.views import UserRedirect, MostFollowedUsers, Logout, Signup
 
 urlpatterns = [
     url(r'^$', Index.as_view(),                                     name='index'),
     url(r'^user/(\w+)/$', Profile.as_view(),                        name='profile'),
-    url(r'^user/(\w+)/post/$', PostTweet.as_view(),                 name='new_post'),
+    url(r'^user/(\w+)/newtweet/$', NewTweet.as_view(),              name='new_post'),
+    url(r'^tweet/([0-9]+)/$', TweetView.as_view(),                  name='tweet'),
     url(r'^hashtag/(\w+)/$', HashTagPage.as_view(),                 name='hashtag'),
     url(r'^search/$', Search.as_view(),                             name='search'),
     url(r'^signup/$', Signup.as_view(),                             name='signup'),
@@ -33,5 +34,5 @@ urlpatterns = [
     url(r'^mostfollowed/$', MostFollowedUsers.as_view()),
     url(r'^admin/', admin.site.urls),
     url(r'^i18n/', include('django.conf.urls.i18n')),
-    url(r'^setlang/(?P<lang>\w+)/$', SetLang.as_view(),                name='setlang'),
+    url(r'^setlang/(?P<lang>\w+)/$', SetLang.as_view(),             name='setlang'),
 ]

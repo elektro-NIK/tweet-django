@@ -1,0 +1,55 @@
+{% extends "base/base.html" %}
+{% load i18n %}
+{% load humanize %}
+{% block content %}
+    <div class="row clearfix">
+        <div class="col-md-6 col-md-offset-3 column">
+            <div class="well media tweet">
+                <a class="media-left" href="{% url 'profile' tweet.user %}">
+                    <span class="userpic-50 glyphicon glyphicon-user"></span>
+                </a>
+                <div class="media-body">
+                    <div class="username">
+                        <a href="{% url 'profile' tweet.user %}">{{ tweet.user }}</a>
+                        <span> ({{ tweet.created|naturaltime }})</span>
+                    </div>
+                    <div>{{ tweet.text }}</div>
+                </div>
+                <div class="buttons">
+                    <button class="btn btn-default btn-transparent like-btn">
+                        <i class="glyphicon glyphicon-heart{{ tweet.selflike|yesno:',-empty'}}"></i>
+                        <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.id}}"> {{ tweet.like.users.all.count }}</a>
+                    </button>
+                    <div id="likeModal{{tweet.id}}" class="modal fade">
+                        {% include 'partials/_modal_list.html' with title='Likes' data=tweet.like.users.all %}
+                    </div>
+                    <button class="btn btn-default btn-transparent retweet-btn">
+                        <i class="glyphicon glyphicon-retweet"></i>
+                        <a href="#" data-toggle="modal" data-target="#retweetModal{{tweet.id}}"> {{ tweet.count_retweets }}</a>
+                    </button>
+                    <div id="retweetModal{{tweet.id}}" class="modal fade">
+                        {% include 'partials/_modal_retweet.html' with title='Retweets' data=tweet.retweets.all %}
+                    </div>
+                    <button class="btn btn-default btn-transparent comment-btn">
+                        <i class="glyphicon glyphicon-comment"></i>
+                        <a href="{% url 'tweet' tweet.id %}"> {{ tweet.count_comments }}</a>
+                    </button>
+                </div>
+                <form id="comment-form" action="{% url 'tweet' tweet.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        {{ form.errors }}
+                        <input type="text" class="form-control" placeholder="{% trans 'New comment' %}" name="{{ form.comment.name }}">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-comment"></i></button>
+                        </span>
+                    </div>
+                </form>
+                <br>
+                <div class="comment-wall">
+                    {% include 'partials/_comment_wall.html' with comments=tweet.comments.all %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

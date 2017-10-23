@@ -1,0 +1,15 @@
+{% load humanize %}
+{% for comment in comments %}
+    <div class="media">
+        <a class="media-left" href="{% url 'profile' comment.user %}">
+            <span class="userpic-30 glyphicon glyphicon-user"></span>
+        </a>
+        <div class="media-body">
+            <div class="username">
+                <a href="{% url 'profile' comment.user %}">{{ comment.user }}</a>
+                <span> ({{ comment.created|naturaltime }})</span>
+            </div>
+            {{ comment }}
+        </div>
+    </div>
+{% endfor %}

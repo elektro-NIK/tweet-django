@@ -9,8 +9,44 @@ div.username {
   font-weight: bold;
 }
 
-.userpic {
+.userpic-10 {
+  font-size: 10px;
+}
+
+.userpic-20 {
+  font-size: 20px;
+}
+
+.userpic-30 {
+  font-size: 30px;
+}
+
+.userpic-40 {
+  font-size: 40px;
+}
+
+.userpic-50 {
+  font-size: 50px;
+}
+
+.userpic-60 {
+  font-size: 60px;
+}
+
+.userpic-70 {
   font-size: 70px;
+}
+
+.userpic-80 {
+  font-size: 80px;
+}
+
+.userpic-90 {
+  font-size: 90px;
+}
+
+.userpic-100 {
+  font-size: 100px;
 }
 
 .profile.stat {
