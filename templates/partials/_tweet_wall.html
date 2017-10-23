@@ -11,9 +11,17 @@
         <div class="well tweet">
             <div class="username">
                 <a href="/user/{{ tweet.user.username }}">{{ tweet.user.username }}</a>
+                {% if tweet.tweet %}
+                    <span class="glyphicon glyphicon-retweet"></span>
+                    <a href="/user/{{ tweet.tweet.user.username }}">{{ tweet.tweet.user.username }}</a>
+                {% endif %}
                 <span> ({{ tweet.created|naturaltime }})</span>
             </div>
-            <div>{{ tweet.text }}</div>
+            {% if tweet.tweet %}
+                <div>{{ tweet.tweet.text }}</div>
+            {% else %}
+                <div>{{ tweet.text }}</div>
+            {% endif %}
             <div>
                 <button class="btn btn-default btn-transparent like-btn">
                     <i class="glyphicon glyphicon-heart{{ tweet.selflike|yesno:',-empty'}}"></i>

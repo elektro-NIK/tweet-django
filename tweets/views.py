@@ -1,4 +1,6 @@
 import json
+from itertools import chain
+from operator import attrgetter
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -10,7 +12,7 @@ from django.views import View
 
 from tweet_django.settings import TWEETS_PER_PAGE
 from tweets.forms import TweetForm, SearchForm
-from tweets.models import Tweet, HashTag
+from tweets.models import Tweet, HashTag, Retweet
 from user_profile.models import User, UserFollower
 
 
@@ -32,7 +34,9 @@ class Profile(LoginRequiredMixin, View):
             params['following'] = False
         form = TweetForm(initial={'country': 'Global'})
         tweets = Tweet.objects.filter(user=user_profile).order_by('-created')
-        paginator = Paginator(tweets, TWEETS_PER_PAGE)
+        retweets = Retweet.objects.filter(user=user_profile).order_by('-created')
+        all_tweets = sorted(chain(tweets, retweets), key=attrgetter('created'), reverse=True)
+        paginator = Paginator(all_tweets, TWEETS_PER_PAGE)
         page = request.GET.get('page')
         try:
             tweets = paginator.page(page)
@@ -44,7 +48,7 @@ class Profile(LoginRequiredMixin, View):
         params['profile'] = user_profile
         params['form'] = form
         params['stat'] = {
-            'tweets':    len(Tweet.objects.filter(user=user_profile)),
+            'tweets':    len(all_tweets),
             'following': len(User.objects.get(userfollower=user_follower).followers.all()),
             'followers': UserFollower.objects.values_list('count').filter(user=user_profile).get()[0],
         }
