@@ -102,4 +102,5 @@ ENV/
 
 .idea
 .directory
-db.sqlite3
+TODO
+/db.sqlite3

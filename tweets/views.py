@@ -73,7 +73,7 @@ class Profile(LoginRequiredMixin, View):
         return HttpResponse(json.dumps(''), content_type='application/json')
 
 
-class TweetView(View):
+class TweetView(LoginRequiredMixin, View):
     @staticmethod
     def get(request, tweet_id):
         tweet = Tweet.objects.get(id=tweet_id)
@@ -98,17 +98,17 @@ class NewTweet(View):
                     tag, created = HashTag.objects.get_or_create(name=word[1:])
                     tag.tweet.add(tweet)
             return HttpResponseRedirect('/user/{}/'.format(username))
-        return render(request, 'profile.html', {'form': form})
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-class HashTagPage(View):
+class HashTagPage(LoginRequiredMixin, View):
     @staticmethod
     def get(request, tag):
         hashtag = HashTag.objects.get(name=tag)
         return render(request, 'hashtag.html', {'tweets': hashtag.tweet})
 
 
-class Search(View):
+class Search(LoginRequiredMixin, View):
     @staticmethod
     def get(request):
         # TODO: autoloading

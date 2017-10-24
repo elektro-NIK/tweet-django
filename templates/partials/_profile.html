@@ -1,50 +1,45 @@
 {% load staticfiles %}
 {% load i18n %}
-<div class="well profile">
-    <div class="row">
-        <div class="col-md-4">
-            <a href="#"><span class="userpic glyphicon glyphicon-user"></span></a>
-        </div>
-        <div class="col-md-8">
-            <a href="{% url 'profile' profile.username %}"><h4>{{ profile.username }}</h4></a>
-            {% if profile.username != user.username %}
-                {% csrf_token %}
-                <button class="btn btn-{{ following|yesno:'danger,success' }} follow-btn" value="{{ following }}" username="{{ profile.username }}">
-                    <span class="glyphicon glyphicon-{{ following|yesno:'minus,plus'}}"></span>
-                    <span class="follow-text">{{ following|yesno:_('Unfollow,Follow') }}</span>
-                </button>
-            {% endif %}
-        </div>
-        <div class="col-md-12">
-            <div class="row stat">
-                <ul class="list-inline">
-                    <li class="col-md-4 column">
-                        <div>{% trans 'Tweets' %}</div>
-                        <div class="profile stat">
-                            <a href="{% url 'profile' profile.username %}">{{ stat.tweets }}</a>
-                        </div>
-                    </li>
-                    <li class="col-md-4">
-                        <div>{% trans 'Following' %}</div>
-                        <div class="profile stat">
-                            <a href="#" data-toggle="modal" data-target="#followingModal">{{ stat.following }}</a>
-                            <div id="followingModal" class="modal fade">
-                                {% include 'partials/_modal_list.html' with title='Following' data=profile.followers.all %}
-                            </div>
-                        </div>
-                    </li>
-                    <li class="col-md-4">
-                        <div>{% trans 'Followers' %}</div>
-                        <div class="profile stat">
-                            <a href="#" data-toggle="modal" data-target="#followersModal">{{ stat.followers }}</a>
-                            <div id="followersModal" class="modal fade">
-                                {% include 'partials/_modal_list.html' with title='Followers' data=profile.userfollower.followers.all %}
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+<div class="media well profile">
+    <a class="media-left" href="{% url 'profile' profile %}">
+        <span class="userpic-70 glyphicon glyphicon-user"></span>
+    </a>
+    <div class="media-body">
+        <a href="{% url 'profile' profile %}"><h4>{{ profile }}</h4></a>
+        {% if profile != user %}
+            {% csrf_token %}
+            <button class="btn btn-{{ following|yesno:'danger,success' }} follow-btn" value="{{ following }}" username="{{ profile }}">
+                <span class="glyphicon glyphicon-{{ following|yesno:'minus,plus'}}"></span>
+                <span class="follow-text">{{ following|yesno:_('Unfollow,Follow') }}</span>
+            </button>
+        {% endif %}
     </div>
-
+    <div class="col-md-12 column">
+        <ul class="list-inline">
+            <li class="col-md-4 column">
+                <div>{% trans 'Tweets' %}</div>
+                <div class="profile stat">
+                    <a href="{% url 'profile' profile %}">{{ stat.tweets }}</a>
+                </div>
+            </li>
+            <li class="col-md-4">
+                <div>{% trans 'Following' %}</div>
+                <div class="profile stat">
+                    <a href="#" data-toggle="modal" data-target="#followingModal">{{ stat.following }}</a>
+                    <div id="followingModal" class="modal fade">
+                        {% include 'partials/_modal_list.html' with title='Following' data=profile.followers.all %}
+                    </div>
+                </div>
+            </li>
+            <li class="col-md-4">
+                <div>{% trans 'Followers' %}</div>
+                <div class="profile stat">
+                    <a href="#" data-toggle="modal" data-target="#followersModal">{{ stat.followers }}</a>
+                    <div id="followersModal" class="modal fade">
+                        {% include 'partials/_modal_list.html' with title='Followers' data=profile.userfollower.followers.all %}
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>

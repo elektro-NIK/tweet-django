@@ -7,8 +7,8 @@
             {% include 'partials/_profile.html' %}
         </div>
         <div class="col-md-6 column">
-            {% if profile.username == user.username %}
-                <form id="post-form" action="{% url 'new_post' user.username %}" method="POST">
+            {% if profile == user %}
+                <form id="post-form" action="{% url 'new_post' user %}" method="POST">
                     {% csrf_token %}
                     <div class="input-group">
                         {{ form.text.errors }}

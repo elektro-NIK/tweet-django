@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load humanize %}
 {% block content %}
-    <div class="row clearfix">
+    <div class="row">
         <div class="col-md-6 col-md-offset-3 column">
             <div class="well media tweet">
                 <a class="media-left" href="{% url 'profile' tweet.user %}">
@@ -49,6 +49,7 @@
                 <div class="comment-wall">
                     {% include 'partials/_comment_wall.html' with comments=tweet.comments.all %}
                 </div>
+                <br>
             </div>
         </div>
     </div>

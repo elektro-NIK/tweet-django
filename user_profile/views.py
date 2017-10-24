@@ -1,4 +1,5 @@
 from django.contrib.auth import logout
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
@@ -14,7 +15,7 @@ class UserRedirect(View):
         return HttpResponseRedirect('/user/{}/'.format(request.user.username))
 
 
-class MostFollowedUsers(View):
+class MostFollowedUsers(LoginRequiredMixin, View):
     @staticmethod
     def get(request):
         user_followers = UserFollower.objects.order_by('-count')[:10]
