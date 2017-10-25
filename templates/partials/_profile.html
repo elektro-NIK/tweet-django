@@ -19,24 +19,26 @@
             <li class="col-md-4 column">
                 <div>{% trans 'Tweets' %}</div>
                 <div class="profile stat">
-                    <a href="{% url 'profile' profile %}">{{ stat.tweets }}</a>
+                    <a class="stat" href="{% url 'profile' profile %}">{{ stat.tweets }}</a>
                 </div>
             </li>
             <li class="col-md-4">
-                <div>{% trans 'Following' %}</div>
+                {% trans 'Following' as following %}
+                <div>{{ following }}</div>
                 <div class="profile stat">
-                    <a href="#" data-toggle="modal" data-target="#followingModal">{{ stat.following }}</a>
+                    <a class="stat" href="#" data-toggle="modal" data-target="#followingModal">{{ stat.following }}</a>
                     <div id="followingModal" class="modal fade">
-                        {% include 'partials/_modal_list.html' with title='Following' data=profile.followers.all %}
+                        {% include 'partials/_modal_list.html' with title=following data=profile.followers.all %}
                     </div>
                 </div>
             </li>
             <li class="col-md-4">
-                <div>{% trans 'Followers' %}</div>
+                {% trans 'Followers' as followers%}
+                <div>{{ followers }}</div>
                 <div class="profile stat">
-                    <a href="#" data-toggle="modal" data-target="#followersModal">{{ stat.followers }}</a>
+                    <a class="stat" href="#" data-toggle="modal" data-target="#followersModal">{{ stat.followers }}</a>
                     <div id="followersModal" class="modal fade">
-                        {% include 'partials/_modal_list.html' with title='Followers' data=profile.userfollower.followers.all %}
+                        {% include 'partials/_modal_list.html' with title=followers data=profile.userfollower.followers.all %}
                     </div>
                 </div>
             </li>

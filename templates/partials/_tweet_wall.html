@@ -28,14 +28,16 @@
                         <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.id}}"> {{ tweet.like.users.all.count }}</a>
                     </button>
                     <div id="likeModal{{tweet.id}}" class="modal fade">
-                        {% include 'partials/_modal_list.html' with title='Likes' data=tweet.like.users.all %}
+                        {% trans 'Likes' as likes %}
+                        {% include 'partials/_modal_list.html' with title=likes data=tweet.like.users.all %}
                     </div>
                     <button class="btn btn-default btn-transparent retweet-btn">
                         <i class="glyphicon glyphicon-retweet"></i>
                         <a href="#" data-toggle="modal" data-target="#retweetModal{{tweet.id}}"> {{ tweet.count_retweets }}</a>
                     </button>
                     <div id="retweetModal{{tweet.id}}" class="modal fade">
-                        {% include 'partials/_modal_retweet.html' with title='Retweets' data=tweet.retweets.all %}
+                        {% trans 'Retweets' as retweets %}
+                        {% include 'partials/_modal_retweet.html' with title=retweets data=tweet.retweets.all %}
                     </div>
                     <button class="btn btn-default btn-transparent comment-btn">
                         <i class="glyphicon glyphicon-comment"></i>

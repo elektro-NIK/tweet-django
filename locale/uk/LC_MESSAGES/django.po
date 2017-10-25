@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-10-16 04:43+0000\n"
+"POT-Creation-Date: 2017-10-25 22:42+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,42 +19,42 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: templates/base/header.html:12
+#: templates/base/header.html:11
 msgid "Profile"
 msgstr "Профіль"
 
-#: templates/base/header.html:16
+#: templates/base/header.html:15
 msgid "User stats"
 msgstr "Аналітика"
 
-#: templates/base/header.html:20
+#: templates/base/header.html:19
 msgid "Settings"
 msgstr "Налаштування"
 
-#: templates/base/header.html:24
+#: templates/base/header.html:23
 msgid "Logout"
 msgstr "Вийти"
 
-#: templates/base/header.html:32 templates/search.html:12
+#: templates/base/header.html:31 templates/search.html:12
 #: templates/search.html:14
 msgid "Search"
 msgstr "Пошук"
 
-#: templates/base/header.html:43 templates/login.html:42
-#: templates/signup.html:54
+#: templates/base/header.html:42 templates/login.html:44
+#: templates/signup.html:62
 msgid "Sign Up"
 msgstr "Реєстрація"
 
-#: templates/base/header.html:44 templates/login.html:40
-#: templates/signup.html:56
+#: templates/base/header.html:43 templates/login.html:42
+#: templates/signup.html:64
 msgid "Login"
 msgstr "Вхід"
 
-#: templates/login.html:5
+#: templates/login.html:6
 msgid "Your username and password didn't match. Please try again."
 msgstr "Ім'я користувача чи пароль невірні. Спробуйте ще раз."
 
-#: templates/login.html:9
+#: templates/login.html:10
 msgid ""
 "Your account doesn't have access to this page. To proceed, please login with "
 "an account that has access."
@@ -62,35 +62,40 @@ msgstr ""
 "Ваш профіль не має доступу до цієї сторінки. Для відображення увійдіть під "
 "іншим профілем."
 
-#: templates/login.html:11
+#: templates/login.html:12
 msgid "Please login to see this page."
 msgstr "Увійдіть для перегляду цієї сторінки."
 
-#: templates/login.html:23
+#: templates/login.html:25
 msgid "Username"
 msgstr "Логін"
 
-#: templates/login.html:33
+#: templates/login.html:35
 msgid "Password"
 msgstr "Пароль"
 
-#: templates/login.html:41 templates/signup.html:55
+#: templates/login.html:43 templates/signup.html:63
 msgid "or"
 msgstr "або"
 
-#: templates/partials/_profile.html:14
+#: templates/partials/_modal_list.html:19
+#: templates/partials/_modal_retweet.html:19
+msgid "Close"
+msgstr "Закрити"
+
+#: templates/partials/_profile.html:13
 msgid "Unfollow,Follow"
 msgstr "Не читати,Читати"
 
-#: templates/partials/_profile.html:23
+#: templates/partials/_profile.html:20
 msgid "Tweets"
 msgstr "Твіти"
 
-#: templates/partials/_profile.html:29
+#: templates/partials/_profile.html:26
 msgid "Following"
 msgstr "Читає"
 
-#: templates/partials/_profile.html:35
+#: templates/partials/_profile.html:36
 msgid "Followers"
 msgstr "Читачі"
 
@@ -98,14 +103,30 @@ msgstr "Читачі"
 msgid "Nothing to show"
 msgstr "Немає даних для відображення"
 
+#: templates/partials/_tweet_wall.html:31
+msgid "Likes"
+msgstr "Вподобання"
+
+#: templates/partials/_tweet_wall.html:39
+msgid "Retweets"
+msgstr "Ретвіти"
+
 #: templates/profile.html:15
 msgid "New tweet"
 msgstr "Новий твіт"
 
-#: templates/signup.html:5
-msgid "Error! Please try again."
-msgstr "Помилка! Спробуйте ще раз."
+#: templates/tweet.html:42
+msgid "New comment"
+msgstr "Новий коментар"
 
 #: templates/users.html:16
 msgid "followers"
 msgstr "читачів"
+
+#: tweet_django/settings.py:107
+msgid "English"
+msgstr "Англійська"
+
+#: tweet_django/settings.py:108
+msgid "Ukrainian"
+msgstr "Українська"
