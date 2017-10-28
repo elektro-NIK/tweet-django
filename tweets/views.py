@@ -80,7 +80,7 @@ class TweetView(LoginRequiredMixin, View):
         return render(request, 'tweet.html', {'tweet': tweet})
 
 
-class NewTweet(View):
+class NewTweet(LoginRequiredMixin, View):
     @staticmethod
     def post(request, username):
         form = TweetForm(request.POST)
@@ -99,6 +99,16 @@ class NewTweet(View):
                     tag.tweet.add(tweet)
             return HttpResponseRedirect('/user/{}/'.format(username))
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class LikeView(LoginRequiredMixin, View):
+    def post(self, request):
+        return HttpResponse(json.dumps(''), content_type='application/json')
+
+
+class RetweetView(LoginRequiredMixin, View):
+    def post(self, request):
+        return HttpResponse(json.dumps(''), content_type='application/json')
 
 
 class HashTagPage(LoginRequiredMixin, View):

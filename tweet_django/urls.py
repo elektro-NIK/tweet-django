@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import LoginView
 
-from tweets.views import Index, Profile, NewTweet, HashTagPage, Search, SetLang, TweetView
+from tweets.views import *
 from user_profile.views import UserRedirect, MostFollowedUsers, Logout, Signup
 
 urlpatterns = [
@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^user/(\w+)/$', Profile.as_view(),                        name='profile'),
     url(r'^user/(\w+)/newtweet/$', NewTweet.as_view(),              name='new_post'),
     url(r'^tweet/([0-9]+)/$', TweetView.as_view(),                  name='tweet'),
+    url(r'^like/$', LikeView.as_view(),                                 name='like'),
+    url(r'^retweet/$', RetweetView.as_view(),                           name='retweet'),
     url(r'^hashtag/(\w+)/$', HashTagPage.as_view(),                 name='hashtag'),
     url(r'^search/$', Search.as_view(),                             name='search'),
     url(r'^signup/$', Signup.as_view(),                             name='signup'),

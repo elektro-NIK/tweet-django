@@ -8,7 +8,7 @@
 {% else %}
     {% load humanize %}
     {% for tweet in tweets %}
-        <div class="media well tweet">
+        <div class="media well tweet" id="tweet{{ tweet.id }}">
              <a class="media-left" href="{% url 'profile' profile %}">
                 <span class="userpic-50 glyphicon glyphicon-user"></span>
             </a>
@@ -22,8 +22,8 @@
                     <span> ({{ tweet.created|naturaltime }})</span>
                 </div>
                 {% if tweet.tweet %}<div>{{ tweet.tweet.text }}</div>{% else %}<div>{{ tweet.text }}</div>{% endif %}
-                <div>
-                    <button class="btn btn-default btn-transparent like-btn">
+                <div class="buttons">
+                    <button class="btn btn-default btn-transparent like-btn" onclick="like({{ tweet.id }}, '{{ tweet.selflike }}')">
                         <i class="glyphicon glyphicon-heart{{ tweet.selflike|yesno:',-empty'}}"></i>
                         <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.id}}"> {{ tweet.like.users.all.count }}</a>
                     </button>
@@ -31,7 +31,7 @@
                         {% trans 'Likes' as likes %}
                         {% include 'partials/_modal_list.html' with title=likes data=tweet.like.users.all %}
                     </div>
-                    <button class="btn btn-default btn-transparent retweet-btn">
+                    <button class="btn btn-default btn-transparent retweet-btn" onclick="retweet({{ tweet.id }})">
                         <i class="glyphicon glyphicon-retweet"></i>
                         <a href="#" data-toggle="modal" data-target="#retweetModal{{tweet.id}}"> {{ tweet.count_retweets }}</a>
                     </button>
@@ -39,9 +39,9 @@
                         {% trans 'Retweets' as retweets %}
                         {% include 'partials/_modal_retweet.html' with title=retweets data=tweet.retweets.all %}
                     </div>
-                    <button class="btn btn-default btn-transparent comment-btn">
+                    <button class="btn btn-default btn-transparent comment-btn" onclick="location.href = '{% url 'tweet' tweet.id %}'">
                         <i class="glyphicon glyphicon-comment"></i>
-                        <a href="#"> {{ tweet.count_comments }}</a>
+                        <a href="{% url 'tweet' tweet.id %}"> {{ tweet.count_comments }}</a>
                     </button>
                 </div>
             </div>
@@ -68,4 +68,37 @@
             {% endif %}
         </ul>
     {% endif %}
+    <script type="text/javascript">
+        function like (id, selflike) {
+            alert(id + "{{ user }}")
+            $.ajax({
+                type: "POST",
+                url:  "{% url 'like' %}",
+                data: {id: id, user: "{{ user }}", csrfmiddlewaretoken: "{{ csrf_token }}"},
+                success: function () {
+                    alert($("#tweet"+id).find(".like-btn > a").text())
+                },
+                error: function () {
+                    alert("ERROR!");
+                }
+            })
+        }
+    </script>
+    <script type="text/javascript">
+        function retweet (id) {
+            alert(id + "{{ user }}")
+            $.ajax({
+                type: "POST",
+                url:  "{% url 'retweet' %}",
+                data: {id: id, user: "{{ user }}", csrfmiddlewaretoken: "{{ csrf_token }}"},
+                success: function () {
+                    n = +($("#tweet"+id).find(".retweet-btn > a").text() || 0)
+                    $("#tweet"+id).find(".retweet-btn > a").text(++n)
+                },
+                error: function () {
+                    alert("ERROR!");
+                }
+            })
+        }
+    </script>
 {% endif %}
