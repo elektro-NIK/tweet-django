@@ -107,7 +107,12 @@ class LikeView(LoginRequiredMixin, View):
 
 
 class RetweetView(LoginRequiredMixin, View):
-    def post(self, request):
+    @staticmethod
+    def post(request):
+        tweet = Tweet.objects.get(id=request.POST['id'])
+        user = User.objects.get(username=request.POST['user'])
+        retweet = Retweet(tweet=tweet, user=user)
+        retweet.save()
         return HttpResponse(json.dumps(''), content_type='application/json')
 
 
