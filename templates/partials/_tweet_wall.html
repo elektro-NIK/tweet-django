@@ -24,9 +24,14 @@
                 {% if tweet.tweet %}
                     <div>{{ tweet.tweet.text }}</div>
                     <div class="buttons">
-                        <button class="btn btn-default btn-transparent like-btn" onclick="like({{ tweet.tweet.id }}, '{{ tweet.tweet.selflike }}')">
+                        <button class="btn btn-default btn-transparent like-btn" onclick="like({{ tweet.tweet.id }})">
                             <i class="glyphicon glyphicon-heart{{ tweet.tweet.selflike|yesno:',-empty'}}"></i>
-                            <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.tweet.id}}"> {{ tweet.tweet.like.users.all.count }}</a>
+                            <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.tweet.id}}">
+                                {% if tweet.tweet.like.users.all.count != 0 %}
+                                    {{ tweet.tweet.like.users.all.count }}
+                                {% else %}
+                                {% endif %}
+                            </a>
                         </button>
                         <div id="likeModal{{tweet.tweet.id}}" class="modal fade">
                             {% trans 'Likes' as likes %}
@@ -48,9 +53,14 @@
                 {% else %}
                     <div>{{ tweet.text }}</div>
                     <div class="buttons">
-                        <button class="btn btn-default btn-transparent like-btn" onclick="like({{ tweet.id }}, '{{ tweet.selflike }}')">
+                        <button class="btn btn-default btn-transparent like-btn" onclick="like({{ tweet.id }})">
                             <i class="glyphicon glyphicon-heart{{ tweet.selflike|yesno:',-empty'}}"></i>
-                            <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.id}}"> {{ tweet.like.users.all.count }}</a>
+                            <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.id}}">
+                                {% if tweet.like.users.all.count != 0 %}
+                                    {{ tweet.like.users.all.count }}
+                                {% else %}
+                                {% endif %}
+                            </a>
                         </button>
                         <div id="likeModal{{tweet.id}}" class="modal fade">
                             {% trans 'Likes' as likes %}
@@ -95,14 +105,18 @@
         </ul>
     {% endif %}
     <script type="text/javascript">
-        function like (id, selflike) {
-            alert(id + "{{ user }}")
+        function like (id) {
+            var like_btn = $("#tweet"+id).find(".like-btn");
             $.ajax({
                 type: "POST",
                 url:  "{% url 'like' %}",
                 data: {id: id, user: "{{ user }}", csrfmiddlewaretoken: "{{ csrf_token }}"},
                 success: function () {
-                    alert($("#tweet"+id).find(".like-btn > a").text())
+                    like_btn.children("i").toggleClass("glyphicon-heart glyphicon-heart-empty");
+                    n = +(like_btn.text() || 0);
+                    like_btn.children("i").hasClass("glyphicon-heart") ? n++ : n--;
+                    if (n == 0) n='';
+                    like_btn.children("a").text(n);
                 },
                 error: function () {
                     alert("ERROR!");
@@ -117,8 +131,8 @@
                 url:  "{% url 'retweet' %}",
                 data: {id: id, user: "{{ user }}", csrfmiddlewaretoken: "{{ csrf_token }}"},
                 success: function () {
-                    n = +($("#tweet"+id).find(".retweet-btn > a").text() || 0)
-                    $("#tweet"+id).find(".retweet-btn > a").text(++n)
+                    n = +($("#tweet"+id).find(".retweet-btn > a").text() || 0);
+                    $("#tweet"+id).find(".retweet-btn > a").text(++n);
                 },
                 error: function () {
                     alert("ERROR!");

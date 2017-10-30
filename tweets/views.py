@@ -12,7 +12,7 @@ from django.views import View
 
 from tweet_django.settings import TWEETS_PER_PAGE
 from tweets.forms import TweetForm, SearchForm
-from tweets.models import Tweet, HashTag, Retweet
+from tweets.models import Tweet, HashTag, Retweet, Like
 from user_profile.models import User, UserFollower
 
 
@@ -103,6 +103,13 @@ class NewTweet(LoginRequiredMixin, View):
 
 class LikeView(LoginRequiredMixin, View):
     def post(self, request):
+        tweet = Tweet.objects.get(id=request.POST['id'])
+        user = User.objects.get(username=request.POST['user'])
+        like, _ = Like.objects.get_or_create(tweet=tweet)
+        if user in like.users.all():
+            like.users.remove(user)
+        else:
+            like.users.add(user)
         return HttpResponse(json.dumps(''), content_type='application/json')
 
 
