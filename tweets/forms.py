@@ -16,3 +16,7 @@ class SearchForm(forms.Form):
         label='Enter a keyword to search for',
         widget=forms.TextInput(attrs={'class': 'search-query'})
     )
+
+
+class CommentForm(forms.Form):
+    comment = forms.CharField()

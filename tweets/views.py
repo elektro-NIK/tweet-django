@@ -11,8 +11,8 @@ from django.utils import translation
 from django.views import View
 
 from tweet_django.settings import TWEETS_PER_PAGE
-from tweets.forms import TweetForm, SearchForm
-from tweets.models import Tweet, HashTag, Retweet, Like
+from tweets.forms import TweetForm, SearchForm, CommentForm
+from tweets.models import Tweet, HashTag, Retweet, Like, Comment
 from user_profile.models import User, UserFollower
 
 
@@ -77,7 +77,17 @@ class TweetView(LoginRequiredMixin, View):
     @staticmethod
     def get(request, tweet_id):
         tweet = Tweet.objects.get(id=tweet_id)
-        return render(request, 'tweet.html', {'tweet': tweet})
+        return render(request, 'tweet.html', {'tweet': tweet, 'form': CommentForm()})
+
+    @staticmethod
+    def post(request, tweet_id):
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            tweet = Tweet.objects.get(id=tweet_id)
+            user = User.objects.get(username=request.POST['user'])
+            comment = Comment(tweet=tweet, user=user, text=form.cleaned_data['comment'])
+            comment.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class NewTweet(LoginRequiredMixin, View):

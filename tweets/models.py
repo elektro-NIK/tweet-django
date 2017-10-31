@@ -9,8 +9,12 @@ class Tweet(models.Model):
     country = models.CharField(max_length=30, blank=True)
     is_active = models.BooleanField(default=True)
 
-    def selflike(self):
-        return self.user in self.like.users.all()
+    def selflike(self, username):
+        user = User.objects.get(username=username)
+        try:
+            return user in self.like.users.all()
+        except Like.DoesNotExist:
+            return False
 
     def retweets(self):
         return Retweet.objects.filter(tweet=self).order_by('-created')

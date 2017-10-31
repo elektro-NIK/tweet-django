@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load get_selflike %}
 {% if not tweets %}
     <div class="well">
         <span>{% trans 'Nothing to show' %}</span>
@@ -25,7 +26,8 @@
                     <div>{{ tweet.tweet.text }}</div>
                     <div class="buttons">
                         <button class="btn btn-default btn-transparent like-btn" onclick="like({{ tweet.tweet.id }})">
-                            <i class="glyphicon glyphicon-heart{{ tweet.tweet.selflike|yesno:',-empty'}}"></i>
+                            {% get_selflike tweet.tweet user as selflike %}
+                            <i class="glyphicon glyphicon-heart{{ selflike|yesno:',-empty'}}"></i>
                             <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.tweet.id}}">
                                 {% if tweet.tweet.like.users.all.count != 0 %}
                                     {{ tweet.tweet.like.users.all.count }}
@@ -54,7 +56,8 @@
                     <div>{{ tweet.text }}</div>
                     <div class="buttons">
                         <button class="btn btn-default btn-transparent like-btn" onclick="like({{ tweet.id }})">
-                            <i class="glyphicon glyphicon-heart{{ tweet.selflike|yesno:',-empty'}}"></i>
+                            {% get_selflike tweet user as selflike %}
+                            <i class="glyphicon glyphicon-heart{{ selflike|yesno:',-empty'}}"></i>
                             <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.id}}">
                                 {% if tweet.like.users.all.count != 0 %}
                                     {{ tweet.like.users.all.count }}

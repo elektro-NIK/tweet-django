@@ -16,7 +16,7 @@
                     <div>{{ tweet.text }}</div>
                 </div>
                 <div class="buttons">
-                    <button class="btn btn-default btn-transparent like-btn">
+                    <button class="btn btn-default btn-transparent like-btn" onclick="like({{ tweet.id }})">
                         <i class="glyphicon glyphicon-heart{{ tweet.selflike|yesno:',-empty'}}"></i>
                         <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.id}}"> {{ tweet.like.users.all.count }}</a>
                     </button>
@@ -37,6 +37,7 @@
                 </div>
                 <form id="comment-form" action="{% url 'tweet' tweet.id %}" method="POST">
                     {% csrf_token %}
+                    <input type="hidden" name="user" value="{{ user }}">
                     <div class="input-group">
                         {{ form.errors }}
                         <input type="text" class="form-control" placeholder="{% trans 'New comment' %}" name="{{ form.comment.name }}">
@@ -53,4 +54,40 @@
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        function like (id) {
+            var like_btn = $("#tweet"+id).find(".like-btn");
+            $.ajax({
+                type: "POST",
+                url:  "{% url 'like' %}",
+                data: {id: id, user: "{{ user }}", csrfmiddlewaretoken: "{{ csrf_token }}"},
+                success: function () {
+                    like_btn.children("i").toggleClass("glyphicon-heart glyphicon-heart-empty");
+                    n = +(like_btn.text() || 0);
+                    like_btn.children("i").hasClass("glyphicon-heart") ? n++ : n--;
+                    if (n == 0) n='';
+                    like_btn.children("a").text(n);
+                },
+                error: function () {
+                    alert("ERROR!");
+                }
+            })
+        }
+    </script>
+    <script type="text/javascript">
+        function retweet (id) {
+            $.ajax({
+                type: "POST",
+                url:  "{% url 'retweet' %}",
+                data: {id: id, user: "{{ user }}", csrfmiddlewaretoken: "{{ csrf_token }}"},
+                success: function () {
+                    n = +($("#tweet"+id).find(".retweet-btn > a").text() || 0);
+                    $("#tweet"+id).find(".retweet-btn > a").text(++n);
+                },
+                error: function () {
+                    alert("ERROR!");
+                }
+            })
+        }
+    </script>
 {% endblock %}
