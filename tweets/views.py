@@ -136,8 +136,12 @@ class RetweetView(LoginRequiredMixin, View):
 class HashTagPage(LoginRequiredMixin, View):
     @staticmethod
     def get(request, tag):
-        hashtag = HashTag.objects.get(name=tag)
-        return render(request, 'hashtag.html', {'tweets': hashtag.tweet})
+        try:
+            hashtag = HashTag.objects.get(name=tag)
+        except HashTag.DoesNotExist:
+            hashtag = None
+        tweets = hashtag.tweet.all() if hashtag else None
+        return render(request, 'hashtag.html', {'tweets': tweets})
 
 
 class Search(LoginRequiredMixin, View):

@@ -22,7 +22,7 @@ class MostFollowedUsers(LoginRequiredMixin, View):
         return render(request, 'users.html', {'user_followers': user_followers})
 
 
-class Logout(View):
+class Logout(LoginRequiredMixin, View):
     @staticmethod
     def get(request):
         logout(request)

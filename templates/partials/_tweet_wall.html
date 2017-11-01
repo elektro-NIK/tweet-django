@@ -10,7 +10,7 @@
     {% load humanize %}
     {% for tweet in tweets %}
         <div class="media well tweet" id="tweet{{ tweet.id }}">
-             <a class="media-left" href="{% url 'profile' profile %}">
+             <a class="media-left" href="{% url 'profile' tweet.user %}">
                 <span class="userpic-50 glyphicon glyphicon-user"></span>
             </a>
             <div class="media-body">
