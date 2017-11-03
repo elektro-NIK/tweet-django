@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
+from django.urls import reverse
 from django.views import View
 
 from user_profile.forms import SignupForm
@@ -12,7 +13,7 @@ from user_profile.models import UserFollower
 class UserRedirect(View):
     @staticmethod
     def get(request):
-        return HttpResponseRedirect('/user/{}/'.format(request.user.username))
+        return HttpResponseRedirect(reverse('profile', args=[request.user.username]))
 
 
 class MostFollowedUsers(LoginRequiredMixin, View):
@@ -29,15 +30,18 @@ class Logout(LoginRequiredMixin, View):
         try:
             url = request.GET['next']
         except KeyError:
-            url = '/'
+            url = reverse('index')
         return HttpResponseRedirect(url)
 
 
 class Signup(View):
     @staticmethod
     def get(request):
-        form = SignupForm()
-        return render(request, 'signup.html', {'form': form})
+        if request.user.is_authenticated():
+            return HttpResponseRedirect(reverse('profile', args=[request.user.username]))
+        else:
+            form = SignupForm()
+            return render(request, 'signup.html', {'form': form})
 
     @staticmethod
     def post(request):
@@ -54,6 +58,6 @@ class Signup(View):
             try:
                 next_url = request.GET['next']
             except KeyError:
-                next_url = '/user/{}'.format(user.username)
-            return HttpResponseRedirect('/login/?next={}'.format(next_url))
+                next_url = reverse('profile', args=[user.username])
+            return HttpResponseRedirect(reverse('login')+'?next={}'.format(next_url))
         return render(request, 'signup.html', {'form': form})
