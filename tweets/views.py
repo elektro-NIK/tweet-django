@@ -4,9 +4,10 @@ from operator import attrgetter
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils import translation
 from django.views import View
 
@@ -33,8 +34,8 @@ class Profile(LoginRequiredMixin, View):
         else:
             params['following'] = False
         form = TweetForm(initial={'country': 'Global'})
-        tweets = Tweet.objects.filter(user=user_profile).order_by('-created')
-        retweets = Retweet.objects.filter(user=user_profile).order_by('-created')
+        tweets = Tweet.objects.filter(user=user_profile).filter(is_active=True).order_by('-created')
+        retweets = Retweet.objects.filter(user=user_profile).filter(is_active=True).order_by('-created')
         all_tweets = sorted(chain(tweets, retweets), key=attrgetter('created'), reverse=True)
         paginator = Paginator(all_tweets, TWEETS_PER_PAGE)
         page = request.GET.get('page')
@@ -77,21 +78,23 @@ class TweetView(LoginRequiredMixin, View):
     @staticmethod
     def get(request, tweet_id):
         tweet = Tweet.objects.get(id=tweet_id)
-        all_comments = sorted(tweet.comments(), key=attrgetter('created'), reverse=True)
-        paginator = Paginator(all_comments, COMMENTS_PER_PAGE)
-        page = request.GET.get('page')
-        try:
-            comments = paginator.page(page)
-        except PageNotAnInteger:
-            comments = paginator.page(1)
-        except EmptyPage:
-            comments = paginator.page(paginator.num_pages)
-        params = {
-            'form': CommentForm(),
-            'tweet': tweet,
-            'comments': comments,
-        }
-        return render(request, 'tweet.html', params)
+        if tweet.is_active:
+            all_comments = sorted(tweet.comments(), key=attrgetter('created'), reverse=True)
+            paginator = Paginator(all_comments, COMMENTS_PER_PAGE)
+            page = request.GET.get('page')
+            try:
+                comments = paginator.page(page)
+            except PageNotAnInteger:
+                comments = paginator.page(1)
+            except EmptyPage:
+                comments = paginator.page(paginator.num_pages)
+            params = {
+                'form': CommentForm(),
+                'tweet': tweet,
+                'comments': comments,
+            }
+            return render(request, 'tweet.html', params)
+        return HttpResponseRedirect(reverse('profile', args=[request.user]))
 
     @staticmethod
     def post(request, tweet_id):
@@ -145,6 +148,21 @@ class RetweetView(LoginRequiredMixin, View):
         retweet = Retweet(tweet=tweet, user=user)
         retweet.save()
         return HttpResponse(json.dumps(''), content_type='application/json')
+
+
+class TweetRemove(LoginRequiredMixin, View):
+    @staticmethod
+    def post(request):
+        user = User.objects.get(username=request.user)
+        if request.POST['type'] == 'tweet':
+            tweet = Tweet.objects.get(id=request.POST['id'])
+        elif request.POST['type'] == 'retweet':
+            tweet = Retweet.objects.get(id=request.POST['id'])
+        if user == tweet.user:
+            tweet.is_active = False
+            tweet.save()
+            return HttpResponse(json.dumps(''), content_type='application/json')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class HashTagPage(LoginRequiredMixin, View):

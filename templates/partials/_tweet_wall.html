@@ -14,6 +14,12 @@
                 <span class="userpic-50 glyphicon glyphicon-user"></span>
             </a>
             <div class="media-body">
+                {% if user == tweet.user %}
+                    <button class="pull-right btn-transparent glyphicon glyphicon-remove remove-btn"
+                            value="{{ tweet.tweet.id }}"
+                            onclick="delete_tweet({{ tweet.id }})">
+                    </button>
+                {% endif %}
                 <div class="username">
                     <a href="{% url 'profile' tweet.user %}">{{ tweet.user }}</a>
                     {% if tweet.tweet %}
@@ -25,7 +31,7 @@
                 {% if tweet.tweet %}
                     <div>{{ tweet.tweet.text }}</div>
                     <div class="buttons">
-                        <button class="btn btn-default btn-transparent like-btn" onclick="like({{ tweet.tweet.id }})">
+                        <button class="btn-transparent like-btn" onclick="like({{ tweet.tweet.id }})">
                             {% get_selflike tweet.tweet user as selflike %}
                             <i class="glyphicon glyphicon-heart{{ selflike|yesno:',-empty'}}"></i>
                             <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.tweet.id}}">
@@ -39,7 +45,7 @@
                             {% trans 'Likes' as likes %}
                             {% include 'partials/_modal_list.html' with title=likes data=tweet.tweet.like.users.all %}
                         </div>
-                        <button class="btn btn-default btn-transparent retweet-btn" onclick="retweet({{ tweet.tweet.id }})">
+                        <button class="btn-transparent retweet-btn" onclick="retweet({{ tweet.tweet.id }})">
                             <i class="glyphicon glyphicon-retweet"></i>
                             <a href="#" data-toggle="modal" data-target="#retweetModal{{tweet.tweet.id}}"> {{ tweet.tweet.count_retweets }}</a>
                         </button>
@@ -47,7 +53,7 @@
                             {% trans 'Retweets' as retweets %}
                             {% include 'partials/_modal_retweet.html' with title=retweets data=tweet.tweet.retweets.all %}
                         </div>
-                        <button class="btn btn-default btn-transparent comment-btn" onclick="location.href = '{% url 'tweet' tweet.tweet.id %}'">
+                        <button class="btn-transparent comment-btn" onclick="location.href = '{% url 'tweet' tweet.tweet.id %}'">
                             <i class="glyphicon glyphicon-comment"></i>
                             <a href="{% url 'tweet' tweet.tweet.id %}"> {{ tweet.tweet.count_comments }}</a>
                         </button>
@@ -55,7 +61,7 @@
                 {% else %}
                     <div>{{ tweet.text }}</div>
                     <div class="buttons">
-                        <button class="btn btn-default btn-transparent like-btn" onclick="like({{ tweet.id }})">
+                        <button class="btn-transparent like-btn" onclick="like({{ tweet.id }})">
                             {% get_selflike tweet user as selflike %}
                             <i class="glyphicon glyphicon-heart{{ selflike|yesno:',-empty'}}"></i>
                             <a href="#" data-toggle="modal" data-target="#likeModal{{tweet.id}}">
@@ -69,7 +75,7 @@
                             {% trans 'Likes' as likes %}
                             {% include 'partials/_modal_list.html' with title=likes data=tweet.like.users.all %}
                         </div>
-                        <button class="btn btn-default btn-transparent retweet-btn" onclick="retweet({{ tweet.id }})">
+                        <button class="btn-transparent retweet-btn" onclick="retweet({{ tweet.id }})">
                             <i class="glyphicon glyphicon-retweet"></i>
                             <a href="#" data-toggle="modal" data-target="#retweetModal{{tweet.id}}"> {{ tweet.count_retweets }}</a>
                         </button>
@@ -77,7 +83,7 @@
                             {% trans 'Retweets' as retweets %}
                             {% include 'partials/_modal_retweet.html' with title=retweets data=tweet.retweets.all %}
                         </div>
-                        <button class="btn btn-default btn-transparent comment-btn" onclick="location.href = '{% url 'tweet' tweet.id %}'">
+                        <button class="btn-transparent comment-btn" onclick="location.href = '{% url 'tweet' tweet.id %}'">
                             <i class="glyphicon glyphicon-comment"></i>
                             <a href="{% url 'tweet' tweet.id %}"> {{ tweet.count_comments }}</a>
                         </button>
@@ -136,6 +142,27 @@
                 success: function () {
                     n = +($("#tweet"+id).find(".retweet-btn > a").text() || 0);
                     $("#tweet"+id).find(".retweet-btn > a").text(++n);
+                },
+                error: function () {
+                    alert("ERROR!");
+                }
+            })
+        }
+    </script>
+    <script type="text/javascript">
+        function delete_tweet (id) {
+            var btn_val = $("#tweet"+id).find(".remove-btn").attr("value");
+            var type = btn_val ? "retweet" : "tweet";
+            $.ajax({
+                type: "POST",
+                url:  "{% url 'remove_tweet' %}",
+                data: {
+                    type: type,
+                    id:   id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success: function () {
+                    $("#tweet"+id).attr("hidden", "true");
                 },
                 error: function () {
                     alert("ERROR!");

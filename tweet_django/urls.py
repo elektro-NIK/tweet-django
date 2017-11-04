@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^$', Index.as_view(),                                             name='index'),
     url(r'^user/(\w+)/$', Profile.as_view(),                                name='profile'),
     url(r'^user/(\w+)/newtweet/$', NewTweet.as_view(),                      name='new_post'),
+    url(r'^tweet/remove/$', TweetRemove.as_view(),                          name='remove_tweet'),
     url(r'^tweet/([0-9]+)/$', TweetView.as_view(),                          name='tweet'),
     url(r'^like/$', LikeView.as_view(),                                     name='like'),
     url(r'^retweet/$', RetweetView.as_view(),                               name='retweet'),
