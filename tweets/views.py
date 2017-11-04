@@ -10,7 +10,7 @@ from django.template.loader import render_to_string
 from django.utils import translation
 from django.views import View
 
-from tweet_django.settings import TWEETS_PER_PAGE
+from tweet_django.settings import TWEETS_PER_PAGE, COMMENTS_PER_PAGE
 from tweets.forms import TweetForm, SearchForm, CommentForm
 from tweets.models import Tweet, HashTag, Retweet, Like, Comment
 from user_profile.models import User, UserFollower
@@ -77,7 +77,21 @@ class TweetView(LoginRequiredMixin, View):
     @staticmethod
     def get(request, tweet_id):
         tweet = Tweet.objects.get(id=tweet_id)
-        return render(request, 'tweet.html', {'tweet': tweet, 'form': CommentForm()})
+        all_comments = sorted(tweet.comments(), key=attrgetter('created'), reverse=True)
+        paginator = Paginator(all_comments, COMMENTS_PER_PAGE)
+        page = request.GET.get('page')
+        try:
+            comments = paginator.page(page)
+        except PageNotAnInteger:
+            comments = paginator.page(1)
+        except EmptyPage:
+            comments = paginator.page(paginator.num_pages)
+        params = {
+            'form': CommentForm(),
+            'tweet': tweet,
+            'comments': comments,
+        }
+        return render(request, 'tweet.html', params)
 
     @staticmethod
     def post(request, tweet_id):
