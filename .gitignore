@@ -101,7 +101,7 @@ ENV/
 .idea
 .directory
 TODO
-/db.sqlite3
+db.sqlite3
 !/static/bootstrap/fonts/glyphicons-halflings-regular.ttf
 !/static/bootstrap/fonts/glyphicons-halflings-regular.woff
 !/static/bootstrap/fonts/glyphicons-halflings-regular.woff2
