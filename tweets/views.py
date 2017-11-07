@@ -20,13 +20,13 @@ from user_profile.models import User, UserFollower
 class Index(View):
     @staticmethod
     def get(request):
-        return render(request, 'base/base.html')
+        return render(request, 'base/base.html', {'title': 'Index'})
 
 
 class Profile(LoginRequiredMixin, View):
     @staticmethod
     def get(request, username):
-        params = {}
+        params = {'title': 'User profile'}
         user_profile = User.objects.get(username=username)
         user_follower = UserFollower.objects.get(user=user_profile)
         if user_follower.followers.filter(username=request.user.username).exists():
@@ -89,6 +89,7 @@ class TweetView(LoginRequiredMixin, View):
             except EmptyPage:
                 comments = paginator.page(paginator.num_pages)
             params = {
+                'title': 'Tweet',
                 'form': CommentForm(),
                 'tweet': tweet,
                 'comments': comments,
@@ -124,12 +125,13 @@ class NewTweet(LoginRequiredMixin, View):
                 if word[0] == '#':
                     tag, created = HashTag.objects.get_or_create(name=word[1:])
                     tag.tweet.add(tweet)
-            return HttpResponseRedirect('/user/{}/'.format(username))
+            return HttpResponseRedirect(reverse('profile', args=[user]))
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 class LikeView(LoginRequiredMixin, View):
-    def post(self, request):
+    @staticmethod
+    def post(request):
         tweet = Tweet.objects.get(id=request.POST['id'])
         user = User.objects.get(username=request.POST['user'])
         like, _ = Like.objects.get_or_create(tweet=tweet)
@@ -173,17 +175,16 @@ class HashTagPage(LoginRequiredMixin, View):
         except HashTag.DoesNotExist:
             hashtag = None
         tweets = hashtag.tweet.all() if hashtag else None
-        return render(request, 'hashtag.html', {'tweets': tweets})
+        return render(request, 'hashtag.html', {'title': 'Hashtag', 'tweets': tweets})
 
 
 class Search(LoginRequiredMixin, View):
     @staticmethod
     def get(request):
-        # TODO: autoloading
         query = request.GET.get('query')
         tweets = Tweet.objects.filter(text__icontains=query).order_by('-created') if query else ' '
         form = SearchForm() if not query else SearchForm(initial={'query': query})
-        return render(request, 'search.html', {'search': form, 'tweets': tweets})
+        return render(request, 'search.html', {'title': 'Search', 'search': form, 'tweets': tweets})
 
     @staticmethod
     def post(request):

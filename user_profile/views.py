@@ -20,7 +20,7 @@ class MostFollowedUsers(LoginRequiredMixin, View):
     @staticmethod
     def get(request):
         user_followers = UserFollower.objects.order_by('-count')[:10]
-        return render(request, 'users.html', {'user_followers': user_followers})
+        return render(request, 'users.html', {'title': 'Top', 'user_followers': user_followers})
 
 
 class Logout(LoginRequiredMixin, View):
@@ -41,7 +41,7 @@ class Signup(View):
             return HttpResponseRedirect(reverse('profile', args=[request.user.username]))
         else:
             form = SignupForm()
-            return render(request, 'signup.html', {'form': form})
+            return render(request, 'signup.html', {'title': 'Signup', 'form': form})
 
     @staticmethod
     def post(request):
@@ -60,4 +60,4 @@ class Signup(View):
             except KeyError:
                 next_url = reverse('profile', args=[user.username])
             return HttpResponseRedirect(reverse('login')+'?next={}'.format(next_url))
-        return render(request, 'signup.html', {'form': form})
+        return render(request, 'signup.html', {'title': 'Signup', 'form': form})

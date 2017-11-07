@@ -11,12 +11,8 @@
                     <span class="glyphicon glyphicon-user"></span> {% trans 'Profile' %}</a>
                 </li>
                 <li class="divider"></li>
-                <li><a href="#">
+                <li><a href="{% url 'mostfollowed' %}">
                     <span class="glyphicon glyphicon-stats"></span> {% trans 'User stats' %}</a>
-                </li>
-                <li class="divider"></li>
-                <li><a href="#">
-                    <span class="glyphicon glyphicon-cog"></span> {% trans 'Settings' %}</a>
                 </li>
                 <li class="divider"></li>
                 <li><a href="{% url 'logout' %}">
